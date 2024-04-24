@@ -1,0 +1,28 @@
+name: "DEployment Workflow"
+
+on:
+  push:
+      
+    branches:
+      - master
+jobs:
+  simple_deploy:
+
+    runs-on: ubuntu-latest
+    steps:
+    -  name: "checkout repo"
+       uses: action/checkout@v2
+
+    -  name: "Build the image"
+       run: |
+        docker build -t mutiuadeniyi290/books-appp:1 .
+                                    
+    -  name: "Login to DockerHub"
+       uses:  Docker/login-action@v1
+       with:
+         username: ${{ secrets.DOCKERHUB USERNAME }}
+         password: ${{ secrets.DOCKERHUB PASSWORD }}
+
+    -  name: "Push image to DockerHub"
+       run: |
+         docker push mutiuadeniyi290/books-appp:1
